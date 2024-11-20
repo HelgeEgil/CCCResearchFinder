@@ -1,2 +1,7 @@
 # CCCResearchFinder
 Tool to populate a database of publication with local authors from Pubmed using the Entrez API
+
+* First, using `research_finder.py`, the Entrez API is used to perform PubMed searches in the given time frame, using the supplied list of HUS affiliated authors (`data/author_list_from_hus.csv`). Some logics is applied to guess where the author is in the affiliation list. The result is stored as `output/output_from_researchfinder.xlsx`.
+* Second, `add_impact_factor.py` uses a number of sources to find the impact factor of the journals mentioned in `output/output_from_researchfinder.xlsx`. This is a combination of `impact_factor.csv`, a list from Clarvariate with ~10k entries. This list needed to be washed somewhat, this happens at run time with a few conditional statements. In addition, a number of the journals used at HUS could not be identified in this list, so a manual search of ~100 journals was performed (journal website etc.) and put in `data/manual_journals.json`. 
+* Last, the code `statistics_from_pubmed_file.py` was made as a sort of validation. All the titles from a keyword search at PubMed was put in put in `data/pubmed_allHUS_2021-24_journal.csv`. We wanted to check how many publications containing cancer-related keywords with HUS as affiliation were missing from the primary list. 
+* If any of the titles from `data/pubmed_allHUS_2021-24_journal.csv` were missing from the `research_finder.py` output, add them using `combine_author_search_and_affiliation_search.py`.
